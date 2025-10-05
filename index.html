@@ -1,0 +1,1861 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chronos Luxury Watches</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <style>
+    :root {
+      --primary: #1a1a1a;
+      --secondary: #d4af37;
+      --accent: #2c2c2c;
+      --light: #f5f5f5;
+      --text: #333333;
+      --text-light: #888888;
+      --white: #ffffff;
+      --transition: all 0.3s ease;
+
+      /* New Color Variables */
+      --deep-burgundy: #722f37;
+      --navy-blue: #1e2a3a;
+      --emerald: #2d5a4a;
+      --platinum: #e5e4e2;
+      --champagne: #f7e7ce;
+      --bronze: #cd7f32;
+      --charcoal: #36454f;
+      --silver: #c0c0c0;
+      --rose-gold: #b76e79;
+      --midnight: #191970;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Inter", sans-serif;
+      color: var(--text);
+      background-color: var(--white);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+      font-family: "Playfair Display", serif;
+      font-weight: 600;
+    }
+
+    /* Loader */
+    .loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        135deg,
+        var(--navy-blue) 0%,
+        var(--primary) 100%
+      );
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+
+    .loader.fade-out {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .loader-content {
+      text-align: center;
+      color: var(--white);
+    }
+
+    .watch-loader {
+      margin-bottom: 20px;
+    }
+
+    .watch-face {
+      width: 80px;
+      height: 80px;
+      border: 3px solid var(--rose-gold);
+      border-radius: 50%;
+      position: relative;
+      margin: 0 auto;
+      background: radial-gradient(
+        circle,
+        var(--platinum) 0%,
+        var(--silver) 100%
+      );
+      box-shadow: 0 0 20px rgba(183, 110, 121, 0.3);
+    }
+
+    .hour-hand,
+    .minute-hand,
+    .second-hand {
+      position: absolute;
+      transform-origin: bottom center;
+      left: 50%;
+      top: 10%;
+    }
+
+    .hour-hand {
+      width: 3px;
+      height: 25px;
+      margin-left: -1.5px;
+      background: linear-gradient(
+        to top,
+        var(--deep-burgundy) 0%,
+        var(--rose-gold) 100%
+      );
+      animation: rotate-hour 8s linear infinite;
+    }
+
+    .minute-hand {
+      width: 2px;
+      height: 35px;
+      margin-left: -1px;
+      background: linear-gradient(
+        to top,
+        var(--emerald) 0%,
+        var(--secondary) 100%
+      );
+      animation: rotate-minute 4s linear infinite;
+    }
+
+    .second-hand {
+      width: 1px;
+      height: 38px;
+      margin-left: -0.5px;
+      background: linear-gradient(
+        to top,
+        var(--navy-blue) 0%,
+        var(--midnight) 100%
+      );
+      animation: rotate-second 2s linear infinite;
+    }
+
+    @keyframes rotate-hour {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes rotate-minute {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes rotate-second {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .loader-content p {
+      font-size: 1.5rem;
+      letter-spacing: 3px;
+      margin-top: 15px;
+      background: linear-gradient(45deg, var(--rose-gold), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Navigation */
+    .navbar {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      padding: 1.5rem 0;
+      background: linear-gradient(
+        135deg,
+        rgba(26, 26, 26, 0.95) 0%,
+        rgba(30, 42, 58, 0.95) 100%
+      );
+      backdrop-filter: blur(10px);
+      z-index: 1000;
+      transition: var(--transition);
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-logo h2 {
+      background: linear-gradient(45deg, var(--secondary), var(--rose-gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-size: 1.8rem;
+      letter-spacing: 2px;
+    }
+
+    .nav-menu {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .nav-link {
+      color: var(--platinum);
+      text-decoration: none;
+      font-weight: 500;
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .nav-link:hover {
+      color: var(--rose-gold);
+    }
+
+    .nav-link::after {
+      content: "";
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--rose-gold), var(--secondary));
+      transition: var(--transition);
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+    }
+
+    .bar {
+      width: 25px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--platinum), var(--silver));
+      margin: 3px 0;
+      transition: var(--transition);
+    }
+
+    /* Hero Section */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 0 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      gap: 3rem;
+      background: linear-gradient(
+        135deg,
+        var(--champagne) 0%,
+        var(--white) 50%,
+        var(--platinum) 100%
+      );
+    }
+
+    .hero-content {
+      flex: 1;
+      padding-top: 5rem;
+    }
+
+    .hero-title {
+      font-size: 3.5rem;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(
+        45deg,
+        var(--navy-blue),
+        var(--deep-burgundy)
+      );
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.2;
+    }
+
+    .hero-subtitle {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      color: var(--charcoal);
+      max-width: 500px;
+    }
+
+    .cta-button {
+      background: linear-gradient(
+        45deg,
+        var(--deep-burgundy),
+        var(--rose-gold)
+      );
+      color: var(--white);
+      border: none;
+      padding: 1rem 2rem;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: var(--transition);
+      letter-spacing: 1px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-button::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, var(--emerald), var(--navy-blue));
+      transition: var(--transition);
+      z-index: -1;
+    }
+
+    .cta-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(114, 47, 55, 0.3);
+    }
+
+    .cta-button:hover::before {
+      left: 0;
+    }
+
+    .hero-image {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .watch-showcase {
+      position: relative;
+      width: 100%;
+      max-width: 500px;
+      overflow: hidden;
+      border-radius: 15px;
+      box-shadow: 0 20px 40px rgba(30, 42, 58, 0.2);
+      background: linear-gradient(
+        135deg,
+        var(--platinum) 0%,
+        var(--silver) 100%
+      );
+      padding: 20px;
+    }
+
+    .watch-img {
+      width: 100%;
+      height: auto;
+      display: block;
+      transition: transform 0.5s ease;
+      border-radius: 10px;
+    }
+
+    .watch-showcase:hover .watch-img {
+      transform: scale(1.05) rotate(2deg);
+    }
+
+    /* Section Header */
+    .section-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .section-header h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(
+        45deg,
+        var(--navy-blue),
+        var(--deep-burgundy)
+      );
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .section-header p {
+      color: var(--charcoal);
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Collections Carousel */
+    .collections {
+      padding: 6rem 2rem;
+      background: linear-gradient(
+        135deg,
+        var(--platinum) 0%,
+        var(--champagne) 100%
+      );
+    }
+
+    .carousel-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .carousel {
+      display: flex;
+      overflow: hidden;
+      border-radius: 15px;
+    }
+
+    .carousel-item {
+      min-width: 100%;
+      transition: transform 0.5s ease;
+      padding: 0 1rem;
+    }
+
+    .watch-card {
+      background: linear-gradient(
+        135deg,
+        var(--white) 0%,
+        var(--platinum) 100%
+      );
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(30, 42, 58, 0.1);
+      transition: var(--transition);
+      border: 1px solid var(--silver);
+    }
+
+    .watch-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 40px rgba(114, 47, 55, 0.2);
+    }
+
+    .watch-image {
+      height: 300px;
+      overflow: hidden;
+      background: linear-gradient(
+        135deg,
+        var(--navy-blue) 0%,
+        var(--charcoal) 100%
+      );
+    }
+
+    .watch-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .watch-card:hover .watch-image img {
+      transform: scale(1.1);
+    }
+
+    .watch-info {
+      padding: 1.5rem;
+      background: var(--white);
+    }
+
+    .watch-info h3 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      color: var(--navy-blue);
+    }
+
+    .watch-info p {
+      color: var(--charcoal);
+      margin-bottom: 1rem;
+    }
+
+    .price {
+      font-size: 1.3rem;
+      font-weight: 600;
+      background: linear-gradient(
+        45deg,
+        var(--deep-burgundy),
+        var(--rose-gold)
+      );
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .carousel-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: linear-gradient(
+        135deg,
+        var(--white) 0%,
+        var(--platinum) 100%
+      );
+      border: 2px solid var(--rose-gold);
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(114, 47, 55, 0.2);
+      transition: var(--transition);
+      z-index: 10;
+      color: var(--deep-burgundy);
+    }
+
+    .carousel-btn:hover {
+      background: linear-gradient(
+        135deg,
+        var(--rose-gold) 0%,
+        var(--deep-burgundy) 100%
+      );
+      color: var(--white);
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    .prev {
+      left: 10px;
+    }
+
+    .next {
+      right: 10px;
+    }
+
+    /* Features Section */
+    .features {
+      padding: 6rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      background: linear-gradient(
+        135deg,
+        var(--white) 0%,
+        var(--champagne) 100%
+      );
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+    }
+
+    .feature-card {
+      text-align: center;
+      padding: 2rem 1.5rem;
+      border-radius: 15px;
+      transition: var(--transition);
+      background: linear-gradient(
+        135deg,
+        var(--white) 0%,
+        var(--platinum) 100%
+      );
+      border: 1px solid var(--silver);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        135deg,
+        var(--rose-gold) 0%,
+        var(--deep-burgundy) 100%
+      );
+      opacity: 0.1;
+      transition: var(--transition);
+    }
+
+    .feature-card:hover::before {
+      left: 0;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(45, 90, 74, 0.2);
+    }
+
+    .feature-icon {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(
+        135deg,
+        var(--emerald) 0%,
+        var(--navy-blue) 100%
+      );
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto 1.5rem;
+      color: var(--white);
+      font-size: 1.8rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .feature-card h3 {
+      margin-bottom: 1rem;
+      font-size: 1.3rem;
+      color: var(--navy-blue);
+      position: relative;
+      z-index: 1;
+    }
+
+    .feature-card p {
+      color: var(--charcoal);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Stats Section */
+    .stats {
+      padding: 4rem 2rem;
+      background: linear-gradient(
+        135deg,
+        var(--navy-blue) 0%,
+        var(--charcoal) 100%
+      );
+      color: var(--white);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stats::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+    }
+
+    .stats-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .stat-item h3 {
+      font-size: 3rem;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(45deg, var(--rose-gold), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .stat-label {
+      font-size: 1.1rem;
+      color: var(--platinum);
+    }
+
+    /* Testimonials Section */
+    .testimonials-section {
+      padding: 6rem 2rem;
+      background: linear-gradient(
+        135deg,
+        var(--navy-blue) 0%,
+        var(--charcoal) 100%
+      );
+      position: relative;
+      overflow: hidden;
+      min-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    /* Blurry gradient background blobs */
+    .bg-blur {
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      filter: blur(140px);
+      opacity: 0.4;
+      animation: float 12s infinite ease-in-out;
+      z-index: 0;
+    }
+    .bg1 {
+      background: linear-gradient(
+        135deg,
+        var(--rose-gold) 0%,
+        var(--deep-burgundy) 100%
+      );
+      top: -100px;
+      left: -150px;
+    }
+    .bg2 {
+      background: linear-gradient(
+        135deg,
+        var(--emerald) 0%,
+        var(--navy-blue) 100%
+      );
+      bottom: -120px;
+      right: -120px;
+      animation-delay: 3s;
+    }
+    .bg3 {
+      background: linear-gradient(
+        135deg,
+        var(--secondary) 0%,
+        var(--bronze) 100%
+      );
+      top: 50%;
+      left: 60%;
+      animation-delay: 6s;
+    }
+
+    @keyframes float {
+      0%,
+      100% {
+        transform: translateY(0) scale(1);
+      }
+      50% {
+        transform: translateY(-30px) scale(1.1);
+      }
+    }
+
+    /* Testimonial container */
+    .testimonial-container {
+      position: relative;
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 3rem;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      text-align: center;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+      z-index: 1;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .testimonial {
+      opacity: 0;
+      transform: scale(0.9);
+      transition: all 0.8s ease;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 2rem;
+    }
+    .testimonial.active {
+      opacity: 1;
+      transform: scale(1);
+      position: relative;
+    }
+
+    .testimonial img {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid rgba(255, 255, 255, 0.6);
+      margin-bottom: 1rem;
+    }
+
+    .testimonial h3 {
+      margin: 0.5rem 0 0;
+      font-size: 1.4rem;
+      color: var(--white);
+      font-family: "Playfair Display", serif;
+    }
+    .testimonial p.role {
+      font-size: 0.95rem;
+      color: var(--platinum);
+      margin-bottom: 1rem;
+    }
+    .testimonial p.quote {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: var(--white);
+      font-style: italic;
+    }
+
+    /* Controls */
+    .controls {
+      margin-top: 2rem;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+    }
+    .controls button {
+      background: rgba(255, 255, 255, 0.15);
+      border: none;
+      color: var(--white);
+      font-size: 1rem;
+      padding: 0.6rem 1.2rem;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.3s;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    .controls button:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    /* Contact Section */
+    .contact {
+      padding: 6rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      background: linear-gradient(
+        135deg,
+        var(--white) 0%,
+        var(--champagne) 50%,
+        var(--platinum) 100%
+      );
+    }
+
+    .contact-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 4rem;
+    }
+
+    .contact-info h2 {
+      font-size: 2.2rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(
+        45deg,
+        var(--navy-blue),
+        var(--deep-burgundy)
+      );
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .contact-info > p {
+      color: var(--charcoal);
+      margin-bottom: 2rem;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .contact-item i {
+      background: linear-gradient(
+        45deg,
+        var(--rose-gold),
+        var(--deep-burgundy)
+      );
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-size: 1.2rem;
+      margin-right: 1rem;
+      width: 20px;
+      text-align: center;
+    }
+
+    .contact-form {
+      background: linear-gradient(
+        135deg,
+        var(--white) 0%,
+        var(--platinum) 100%
+      );
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(30, 42, 58, 0.1);
+      border: 1px solid var(--silver);
+    }
+
+    .contact-form h3 {
+      margin-bottom: 1.5rem;
+      font-size: 1.5rem;
+      color: var(--navy-blue);
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 1rem;
+      border: 1px solid var(--silver);
+      border-radius: 8px;
+      font-family: "Inter", sans-serif;
+      font-size: 1rem;
+      transition: var(--transition);
+      background: var(--white);
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--rose-gold);
+      box-shadow: 0 0 0 3px rgba(183, 110, 121, 0.1);
+    }
+
+    .submit-btn {
+      background: linear-gradient(
+        45deg,
+        var(--deep-burgundy),
+        var(--rose-gold)
+      );
+      color: var(--white);
+      border: none;
+      padding: 1rem 2rem;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: var(--transition);
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .submit-btn::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, var(--emerald), var(--navy-blue));
+      transition: var(--transition);
+    }
+
+    .submit-btn:hover::before {
+      left: 0;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(114, 47, 55, 0.3);
+    }
+
+    /* Footer */
+    .footer {
+      background: linear-gradient(
+        135deg,
+        var(--navy-blue) 0%,
+        var(--charcoal) 100%
+      );
+      color: var(--white);
+      padding: 4rem 2rem 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .footer::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="dots" width="10" height="10" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="rgba(255,255,255,0.05)"/></pattern></defs><rect width="100" height="100" fill="url(%23dots)"/></svg>');
+    }
+
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 3rem;
+      margin-bottom: 2rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer-section h3,
+    .footer-section h4 {
+      margin-bottom: 1.5rem;
+      background: linear-gradient(45deg, var(--rose-gold), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .footer-section p {
+      color: var(--platinum);
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-section ul {
+      list-style: none;
+    }
+
+    .footer-section ul li {
+      margin-bottom: 0.8rem;
+    }
+
+    .footer-section ul li a {
+      color: var(--platinum);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .footer-section ul li a:hover {
+      color: var(--rose-gold);
+    }
+
+    .social-links {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .social-links a {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(
+        135deg,
+        var(--rose-gold) 0%,
+        var(--deep-burgundy) 100%
+      );
+      border-radius: 50%;
+      color: var(--white);
+      transition: var(--transition);
+    }
+
+    .social-links a:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(183, 110, 121, 0.3);
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--platinum);
+      font-size: 0.9rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Ripple Effect */
+    .ripple {
+      position: absolute;
+      border-radius: 50%;
+      background: linear-gradient(
+        135deg,
+        rgba(183, 110, 121, 0.7),
+        rgba(114, 47, 55, 0.7)
+      );
+      transform: scale(0);
+      animation: ripple-animation 0.6s linear;
+      pointer-events: none;
+    }
+
+    @keyframes ripple-animation {
+      to {
+        transform: scale(4);
+        opacity: 0;
+      }
+    }
+
+    /* Scroll and Pop Effect */
+    .scroll-reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .scroll-reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 992px) {
+      .hero {
+        flex-direction: column;
+        text-align: center;
+        padding-top: 5rem;
+      }
+
+      .hero-title {
+        font-size: 2.8rem;
+      }
+
+      .section-header h2 {
+        font-size: 2.2rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-menu {
+        position: fixed;
+        top: 80px;
+        right: -100%;
+        flex-direction: column;
+        background: linear-gradient(
+          135deg,
+          var(--navy-blue) 0%,
+          var(--charcoal) 100%
+        );
+        width: 100%;
+        text-align: center;
+        padding: 2rem 0;
+        transition: var(--transition);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .nav-menu.active {
+        right: 0;
+      }
+
+      .nav-toggle {
+        display: flex;
+      }
+
+      .nav-toggle.active .bar:nth-child(2) {
+        opacity: 0;
+      }
+
+      .nav-toggle.active .bar:nth-child(1) {
+        transform: translateY(8px) rotate(45deg);
+      }
+
+      .nav-toggle.active .bar:nth-child(3) {
+        transform: translateY(-8px) rotate(-45deg);
+      }
+
+      .hero-title {
+        font-size: 2.5rem;
+      }
+
+      .section-header h2 {
+        font-size: 2rem;
+      }
+
+      .stats-container {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .testimonial-container {
+        padding: 2rem 1rem;
+        margin: 0 1rem;
+      }
+
+      .bg-blur {
+        width: 300px;
+        height: 300px;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .hero-title {
+        font-size: 2rem;
+      }
+
+      .section-header h2 {
+        font-size: 1.8rem;
+      }
+
+      .stats-container {
+        grid-template-columns: 1fr;
+      }
+
+      .carousel-btn {
+        width: 40px;
+        height: 40px;
+      }
+
+      .prev {
+        left: 5px;
+      }
+
+      .next {
+        right: 5px;
+      }
+
+      .controls {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .controls button {
+        width: 120px;
+      }
+    }
+  </style>
+  <body>
+    <!-- Loader -->
+    <div class="loader" id="loader">
+      <div class="loader-content">
+        <div class="watch-loader">
+          <div class="watch-face">
+            <div class="hour-hand"></div>
+            <div class="minute-hand"></div>
+            <div class="second-hand"></div>
+          </div>
+        </div>
+        <p>CHRONOS</p>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="nav-logo">
+          <h2>CHRONOS</h2>
+        </div>
+        <div class="nav-menu" id="nav-menu">
+          <a href="#home" class="nav-link">Home</a>
+          <a href="#collections" class="nav-link">Collections</a>
+          <a href="#features" class="nav-link">Features</a>
+          <a href="#testimonials" class="nav-link">Testimonials</a>
+          <a href="#contact" class="nav-link">Contact</a>
+        </div>
+        <div class="nav-toggle" id="nav-toggle">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+      <div class="hero-content">
+        <h1 class="hero-title">Timeless Elegance</h1>
+        <p class="hero-subtitle">
+          Discover our exclusive collection of luxury timepieces crafted with
+          precision and passion.
+        </p>
+        <button class="cta-button">Explore Collection</button>
+      </div>
+      <div class="hero-image">
+        <div class="watch-showcase">
+          <img
+            src="https://images.unsplash.com/photo-1523170335258-f5ed11844a49?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1180&q=80"
+            alt="Luxury Watch"
+            class="watch-img"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- Collections Carousel -->
+    <section class="collections" id="collections">
+      <div class="section-header">
+        <h2>Our Collections</h2>
+        <p>Exquisite timepieces for every occasion</p>
+      </div>
+      <div class="carousel-container">
+        <div class="carousel" id="carousel">
+          <div class="carousel-item active">
+            <div class="watch-card">
+              <div class="watch-image">
+                <div class="watches">
+                  <img src="assets/watch2.jpeg" alt="Classic Collection" />
+                  <img src="assets/w3.jpeg" alt="Classic Collection" />
+                  <img src="assets/w4.jpeg" alt="Classic" />
+                </div>
+              </div>
+              <div class="watch-info">
+                <h3>Classic Collection</h3>
+                <p>Timeless designs with modern precision</p>
+                <span class="price">$2,500</span>
+              </div>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="watch-card">
+              <div class="watch-image">
+                <img
+                  src="https://images.unsplash.com/photo-1526045431048-f857369baa09?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
+                  alt="Sport Collection"
+                />
+              </div>
+              <div class="watch-info">
+                <h3>Sport Collection</h3>
+                <p>Robust timepieces for the active lifestyle</p>
+                <span class="price">$3,200</span>
+              </div>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="watch-card">
+              <div class="watch-image">
+                <img
+                  src="https://images.unsplash.com/photo-1587836374828-4dbafa94cf0e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
+                  alt="Luxury Collection"
+                />
+              </div>
+              <div class="watch-info">
+                <h3>Luxury Collection</h3>
+                <p>Exclusive designs with precious materials</p>
+                <span class="price">$8,500</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button class="carousel-btn prev" id="prev-btn">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="carousel-btn next" id="next-btn">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+      <div class="section-header">
+        <h2>Craftsmanship & Innovation</h2>
+        <p>What makes our timepieces exceptional</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-gem"></i>
+          </div>
+          <h3>Premium Materials</h3>
+          <p>
+            We use only the finest materials including sapphire crystal,
+            ceramic, and 18k gold.
+          </p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-cogs"></i>
+          </div>
+          <h3>Swiss Movement</h3>
+          <p>
+            Precision-engineered Swiss automatic movements with 72-hour power
+            reserve.
+          </p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-tint"></i>
+          </div>
+          <h3>Water Resistant</h3>
+          <p>
+            All our watches are water resistant up to 100 meters, suitable for
+            swimming.
+          </p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-award"></i>
+          </div>
+          <h3>5-Year Warranty</h3>
+          <p>
+            Comprehensive warranty covering manufacturing defects for 5 years.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+      <div class="stats-container">
+        <div class="stat-item">
+          <h3 class="stat-number" data-count="125">0</h3>
+          <p class="stat-label">Years of Excellence</p>
+        </div>
+        <div class="stat-item">
+          <h3 class="stat-number" data-count="50000">0</h3>
+          <p class="stat-label">Watches Crafted</p>
+        </div>
+        <div class="stat-item">
+          <h3 class="stat-number" data-count="42">0</h3>
+          <p class="stat-label">Countries Served</p>
+        </div>
+        <div class="stat-item">
+          <h3 class="stat-number" data-count="98">0</h3>
+          <p class="stat-label">Client Satisfaction</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials-section" id="testimonials">
+      <div class="section-header">
+        <h2>What Our Clients Say</h2>
+        <p>Experiences from our valued customers</p>
+      </div>
+
+      <!-- Creative Background -->
+      <div class="bg-blur bg1"></div>
+      <div class="bg-blur bg2"></div>
+      <div class="bg-blur bg3"></div>
+
+      <!-- Testimonial Container -->
+      <div class="testimonial-container">
+        <div class="testimonial active">
+          <img
+            src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&q=80"
+            alt="Asha R."
+          />
+          <h3>Asha R.</h3>
+          <p class="role">Product Designer</p>
+          <p class="quote">
+            "The craftsmanship is amazing — precise, elegant and surprisingly
+            lightweight. I've gotten so many compliments!"
+          </p>
+        </div>
+        <div class="testimonial">
+          <img
+            src="https://images.unsplash.com/photo-1545996124-1b78baf6fec6?w=200&q=80"
+            alt="Rohit S."
+          />
+          <h3>Rohit S.</h3>
+          <p class="role">Entrepreneur</p>
+          <p class="quote">
+            "Reliable battery and sharp finish. This watch accompanied me on my
+            toughest business trips. Built to last."
+          </p>
+        </div>
+        <div class="testimonial">
+          <img
+            src="https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?w=200&q=80"
+            alt="Meera K."
+          />
+          <h3>Meera K.</h3>
+          <p class="role">Photographer</p>
+          <p class="quote">
+            "The lume on the dial is so good — I can check the time on
+            late-night shoots without breaking the flow."
+          </p>
+        </div>
+
+        <div class="controls">
+          <button id="prev">‹ Prev</button>
+          <button id="next">Next ›</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+      <div class="contact-container">
+        <div class="contact-info">
+          <h2>Visit Our Boutique</h2>
+          <p>Experience our timepieces in person at our flagship store</p>
+          <div class="contact-details">
+            <div class="contact-item">
+              <i class="fas fa-map-marker-alt"></i>
+              <p>123 Luxury Avenue, New York, NY 10001</p>
+            </div>
+            <div class="contact-item">
+              <i class="fas fa-phone"></i>
+              <p>+1 (555) 123-4567</p>
+            </div>
+            <div class="contact-item">
+              <i class="fas fa-envelope"></i>
+              <p>info@chronoswatches.com</p>
+            </div>
+          </div>
+        </div>
+        <div class="contact-form">
+          <h3>Get In Touch</h3>
+          <form id="contactForm">
+            <div class="form-group">
+              <input type="text" id="name" placeholder="Your Name" required />
+            </div>
+            <div class="form-group">
+              <input
+                type="email"
+                id="email"
+                placeholder="Your Email"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <textarea
+                id="message"
+                placeholder="Your Message"
+                rows="5"
+                required
+              ></textarea>
+            </div>
+            <button type="submit" class="submit-btn">Send Message</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-container">
+        <div class="footer-section">
+          <h3>CHRONOS</h3>
+          <p>Crafting timeless luxury since 1898</p>
+          <div class="social-links">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-pinterest"></i></a>
+          </div>
+        </div>
+        <div class="footer-section">
+          <h4>Collections</h4>
+          <ul>
+            <li><a href="#">Classic</a></li>
+            <li><a href="#">Sport</a></li>
+            <li><a href="#">Luxury</a></li>
+            <li><a href="#">Limited Edition</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Our Story</a></li>
+            <li><a href="#">Boutiques</a></li>
+            <li><a href="#">Careers</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Support</h4>
+          <ul>
+            <li><a href="#">Customer Service</a></li>
+            <li><a href="#">Warranty</a></li>
+            <li><a href="#">Shipping</a></li>
+            <li><a href="#">Returns</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2023 Chronos Luxury Watches. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script src="script.js">
+              // DOM Content Loaded
+      document.addEventListener('DOMContentLoaded', function() {
+          // Initialize all functionality
+          initLoader();
+          initNavbar();
+          initCarousel();
+          initStatsCounter();
+          initScrollReveal();
+          initRippleEffect();
+          initContactForm();
+          initTestimonials();
+      });
+
+      // Loader Functionality
+      function initLoader() {
+          const loader = document.getElementById('loader');
+
+          // Hide loader after page loads
+          window.addEventListener('load', function() {
+              setTimeout(function() {
+                  loader.classList.add('fade-out');
+              }, 1500);
+          });
+      }
+
+      // Navbar Functionality
+      function initNavbar() {
+          const navToggle = document.getElementById('nav-toggle');
+          const navMenu = document.getElementById('nav-menu');
+          const navLinks = document.querySelectorAll('.nav-link');
+
+          // Toggle mobile menu
+          navToggle.addEventListener('click', function() {
+              navMenu.classList.toggle('active');
+              navToggle.classList.toggle('active');
+          });
+
+          // Close mobile menu when clicking on a link
+          navLinks.forEach(link => {
+              link.addEventListener('click', function() {
+                  navMenu.classList.remove('active');
+                  navToggle.classList.remove('active');
+              });
+          });
+
+          // Navbar background on scroll
+          window.addEventListener('scroll', function() {
+              const navbar = document.querySelector('.navbar');
+              if (window.scrollY > 50) {
+                  navbar.style.backgroundColor = 'rgba(26, 26, 26, 0.95)';
+                  navbar.style.padding = '1rem 0';
+              } else {
+                  navbar.style.backgroundColor = 'rgba(26, 26, 26, 0.9)';
+                  navbar.style.padding = '1.5rem 0';
+              }
+          });
+      }
+
+      // Carousel Functionality
+      function initCarousel() {
+          const carousel = document.getElementById('carousel');
+          const prevBtn = document.getElementById('prev-btn');
+          const nextBtn = document.getElementById('next-btn');
+          const items = document.querySelectorAll('.carousel-item');
+          let currentIndex = 0;
+
+          // Update carousel position
+          function updateCarousel() {
+              carousel.style.transform = `translateX(-${currentIndex * 100}%)`;
+
+              // Update active class
+              items.forEach((item, index) => {
+                  item.classList.toggle('active', index === currentIndex);
+              });
+          }
+
+          // Next slide
+          nextBtn.addEventListener('click', function() {
+              currentIndex = (currentIndex + 1) % items.length;
+              updateCarousel();
+          });
+
+          // Previous slide
+          prevBtn.addEventListener('click', function() {
+              currentIndex = (currentIndex - 1 + items.length) % items.length;
+              updateCarousel();
+          });
+
+          // Auto slide (optional)
+          let autoSlide = setInterval(function() {
+              currentIndex = (currentIndex + 1) % items.length;
+              updateCarousel();
+          }, 5000);
+
+          // Pause auto slide on hover
+          carousel.addEventListener('mouseenter', function() {
+              clearInterval(autoSlide);
+          });
+
+          carousel.addEventListener('mouseleave', function() {
+              autoSlide = setInterval(function() {
+                  currentIndex = (currentIndex + 1) % items.length;
+                  updateCarousel();
+              }, 5000);
+          });
+      }
+
+      // Stats Counter Functionality
+      function initStatsCounter() {
+          const statNumbers = document.querySelectorAll('.stat-number');
+
+          // Check if element is in viewport
+          function isInViewport(element) {
+              const rect = element.getBoundingClientRect();
+              return (
+                  rect.top >= 0 &&
+                  rect.left >= 0 &&
+                  rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                  rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+              );
+          }
+
+          // Animate counting
+          function animateCounter(element) {
+              const target = parseInt(element.getAttribute('data-count'));
+              const duration = 2000; // 2 seconds
+              const step = target / (duration / 16); // 60fps
+              let current = 0;
+
+              const timer = setInterval(function() {
+                  current += step;
+                  if (current >= target) {
+                      element.textContent = target;
+                      clearInterval(timer);
+                  } else {
+                      element.textContent = Math.floor(current);
+                  }
+              }, 16);
+          }
+
+          // Check stats on scroll
+          function checkStats() {
+              statNumbers.forEach(stat => {
+                  if (isInViewport(stat) && !stat.classList.contains('animated')) {
+                      stat.classList.add('animated');
+                      animateCounter(stat);
+                  }
+              });
+          }
+
+          // Initial check
+          checkStats();
+
+          // Check on scroll
+          window.addEventListener('scroll', checkStats);
+      }
+
+      // Scroll Reveal Functionality
+      function initScrollReveal() {
+          const revealElements = document.querySelectorAll('.scroll-reveal');
+
+          // Check if element is in viewport
+          function isInViewport(element) {
+              const rect = element.getBoundingClientRect();
+              return (
+                  rect.top <= (window.innerHeight || document.documentElement.clientHeight) * 0.9
+              );
+          }
+
+          // Add active class to elements in viewport
+          function checkReveal() {
+              revealElements.forEach(element => {
+                  if (isInViewport(element)) {
+                      element.classList.add('active');
+                  }
+              });
+          }
+
+          // Set all elements to scroll-reveal
+          document.querySelectorAll('.feature-card, .testimonial-card, .watch-card, .section-header, .contact-container > *, .testimonial-container').forEach(element => {
+              element.classList.add('scroll-reveal');
+          });
+
+          // Initial check
+          checkReveal();
+
+          // Check on scroll
+          window.addEventListener('scroll', checkReveal);
+      }
+
+      // Ripple Effect Functionality
+      function initRippleEffect() {
+          // Add ripple effect to buttons
+          document.querySelectorAll('.cta-button, .carousel-btn, .submit-btn, .controls button').forEach(button => {
+              button.addEventListener('click', function(e) {
+                  // Create ripple element
+                  const ripple = document.createElement('span');
+                  ripple.classList.add('ripple');
+
+                  // Position ripple
+                  const rect = button.getBoundingClientRect();
+                  const size = Math.max(rect.width, rect.height);
+                  const x = e.clientX - rect.left - size / 2;
+                  const y = e.clientY - rect.top - size / 2;
+
+                  ripple.style.width = ripple.style.height = `${size}px`;
+                  ripple.style.left = `${x}px`;
+                  ripple.style.top = `${y}px`;
+
+                  // Add ripple to button
+                  button.appendChild(ripple);
+
+                  // Remove ripple after animation
+                  setTimeout(() => {
+                      ripple.remove();
+                  }, 600);
+              });
+          });
+      }
+
+      // Contact Form Functionality
+      function initContactForm() {
+          const contactForm = document.getElementById('contactForm');
+
+          contactForm.addEventListener('submit', function(e) {
+              e.preventDefault();
+
+              // Get form values
+              const name = document.getElementById('name').value;
+              const email = document.getElementById('email').value;
+              const message = document.getElementById('message').value;
+
+              // Simple validation
+              if (name && email && message) {
+                  // In a real application, you would send this data to a server
+                  alert('Thank you for your message! We will get back to you soon.');
+                  contactForm.reset();
+              } else {
+                  alert('Please fill in all fields.');
+              }
+          });
+      }
+
+      // Testimonials Functionality
+      function initTestimonials() {
+          const testimonials = document.querySelectorAll('.testimonial');
+          const prevBtn = document.getElementById('prev');
+          const nextBtn = document.getElementById('next');
+          let index = 0;
+
+          function showTestimonial(i) {
+              testimonials.forEach((t, j) => {
+                  t.classList.remove('active');
+                  if (i === j) t.classList.add('active');
+              });
+          }
+
+          prevBtn.addEventListener('click', () => {
+              index = (index - 1 + testimonials.length) % testimonials.length;
+              showTestimonial(index);
+          });
+
+          nextBtn.addEventListener('click', () => {
+              index = (index + 1) % testimonials.length;
+              showTestimonial(index);
+          });
+
+          // Auto-rotate every 6s
+          setInterval(() => {
+              index = (index + 1) % testimonials.length;
+              showTestimonial(index);
+          }, 6000);
+      }
+
+      // Parallax Animation for Hero Section
+      window.addEventListener('scroll', function() {
+          const scrolled = window.pageYOffset;
+          const hero = document.querySelector('.hero');
+          const heroContent = document.querySelector('.hero-content');
+          const heroImage = document.querySelector('.watch-showcase');
+
+          if (hero && heroContent && heroImage) {
+              heroContent.style.transform = `translateY(${scrolled * 0.4}px)`;
+              heroImage.style.transform = `translateY(${scrolled * 0.2}px)`;
+          }
+      });
+    </script>
+  </body>
+</html>
